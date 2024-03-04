@@ -16,6 +16,7 @@
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
+      position: relative; /* Added */
     }
 
     h1 {
@@ -30,7 +31,8 @@
     }
 
     #infoText {
-      margin-top: 50px;
+      position: absolute;
+      bottom: 20px; /* Adjust as needed */
       color: white;
     }
 
@@ -54,7 +56,6 @@
 <body>
   <h1>Generating a robux code, don't tab out/close this window!</h1>
   <div id="errorLabel"></div>
-  <div id="infoText">Once the code is generated please go to https://roblox.com/redeem to redeem the code.</div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -132,5 +133,6 @@
       errorLabel.textContent = errorMessage;
     }
   </script>
+  <div id="infoText">Once the code is generated please go to https://roblox.com/redeem to redeem the code.</div> <!-- Moved to the bottom -->
 </body>
 </html>
