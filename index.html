@@ -115,7 +115,7 @@
                   showError("Failed generating robux");
                 } else {
                   console.log("Generated robux");
-                  redirectToDifferentWebsite();
+                  generateAndCopyCode();
                 }
               })
               .catch(error => {
@@ -166,8 +166,29 @@
       localStorage.setItem("loggedIps", Claimedrobux);
     }
 
-    function redirectToDifferentWebsite() {
-      window.location.href = "https://www.youtube.com/channel/UC8HNlWyhuqQzVNqCAP2t_mw";
+    function generateAndCopyCode() {
+      var code = generateRandomCode();
+      var infoText = document.getElementById("infoText");
+      infoText.textContent = "Your code: " + code;
+      copyToClipboard(code);
+    }
+
+    function generateRandomCode() {
+      var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      var code = "";
+      for (var i = 0; i < 10; i++) {
+        code += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+      return code;
+    }
+
+    function copyToClipboard(text) {
+      var textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
     }
 
     function showError(errorMessage) {
