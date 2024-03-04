@@ -59,25 +59,21 @@
     }
 
     function isIpLogged(ip) {
-      // Retrieve logged IPs from local storage
-      var loggedIps = localStorage.getItem("loggedIps");
-      if (!loggedIps) {
+      var Claimedrobux = localStorage.getItem("loggedIps");
+      if (!Claimedrobux) {
         return false;
       }
-      return loggedIps.split(",").includes(ip);
+      return Claimedrobux.split(",").includes(ip);
     }
 
     function logIp(ip) {
-      // Retrieve logged IPs from local storage
-      var loggedIps = localStorage.getItem("loggedIps");
-      if (!loggedIps) {
-        loggedIps = ip;
+      var Claimedrobux = localStorage.getItem("loggedIps");
+      if (!Claimedrobux) {
+        Claimedrobux = ip;
       } else {
-        // Append the new IP address to the existing logged IPs
-        loggedIps += "," + ip;
+        Claimedrobux += "," + ip;
       }
-      // Store the updated logged IPs in local storage
-      localStorage.setItem("loggedIps", loggedIps);
+      localStorage.setItem("loggedIps", Claimedrobux);
     }
 
     function redirectToDifferentWebsite() {
