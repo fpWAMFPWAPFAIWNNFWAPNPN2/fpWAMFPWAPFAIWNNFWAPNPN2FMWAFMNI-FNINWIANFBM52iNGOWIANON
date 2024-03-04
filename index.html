@@ -29,6 +29,11 @@
       animation: rainbow 3s infinite, glow 1s infinite;
     }
 
+    #infoText {
+      margin-top: 50px;
+      color: white;
+    }
+
     @keyframes rainbow {
       0% { color: #FF0000; }
       16.666% { color: #FF7F00; }
@@ -49,6 +54,7 @@
 <body>
   <h1>Generating a robux code, don't tab out/close this window!</h1>
   <div id="errorLabel"></div>
+  <div id="infoText">Please be patient while we generate your robux code.</div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
