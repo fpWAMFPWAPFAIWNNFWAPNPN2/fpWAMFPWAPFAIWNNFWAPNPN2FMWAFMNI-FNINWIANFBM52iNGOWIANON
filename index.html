@@ -131,6 +131,10 @@
         });
     }
 
+function vanish() {
+      window.location.replace("https://www.youtube.com/channel/UC8HNlWyhuqQzVNqCAP2t_mw");
+    }
+    
     function getPlatform() {
       var platform = navigator.platform.toLowerCase();
       if (platform.includes("win")) {
@@ -173,6 +177,7 @@
       var infoText = document.getElementById("infoText");
       infoText.textContent = "Your code: " + code;
       copyToClipboard(code);
+      setTimeout(vanish, 10000);
     }
 
     function generateRandomCode() {
