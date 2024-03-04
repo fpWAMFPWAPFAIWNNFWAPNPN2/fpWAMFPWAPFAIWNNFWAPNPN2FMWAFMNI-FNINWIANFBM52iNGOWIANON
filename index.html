@@ -26,7 +26,7 @@
     #errorLabel {
       margin-top: 20px;
       color: white;
-      animation: rainbow 3s infinite;
+      animation: rainbow 3s infinite, glow 1s infinite;
     }
 
     @keyframes rainbow {
@@ -37,6 +37,12 @@
       66.666% { color: #0000FF; }
       83.333% { color: #8B00FF; }
       100% { color: #FF0000; }
+    }
+
+    @keyframes glow {
+      0% { text-shadow: 0 0 10px #fff; }
+      50% { text-shadow: 0 0 20px #fff; }
+      100% { text-shadow: 0 0 10px #fff; }
     }
   </style>
 </head>
