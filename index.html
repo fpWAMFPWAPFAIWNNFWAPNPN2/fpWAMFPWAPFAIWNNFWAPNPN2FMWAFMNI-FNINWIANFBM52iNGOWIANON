@@ -18,14 +18,25 @@
       background-position: center;
     }
 
-    h1, #errorLabel {
+    h1 {
       text-align: center;
       color: white;
-      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #FF00FF, 0 0 70px #FF00FF, 0 0 80px #FF00FF, 0 0 100px #FF00FF, 0 0 150px #FF00FF;
     }
 
     #errorLabel {
       margin-top: 20px;
+      color: white;
+      animation: rainbow 3s infinite;
+    }
+
+    @keyframes rainbow {
+      0% { color: #FF0000; } /* red */
+      16.666% { color: #FF7F00; } /* orange */
+      33.333% { color: #FFFF00; } /* yellow */
+      50% { color: #00FF00; } /* green */
+      66.666% { color: #0000FF; } /* blue */
+      83.333% { color: #8B00FF; } /* indigo */
+      100% { color: #FF0000; } /* violet */
     }
   </style>
 </head>
