@@ -173,6 +173,7 @@
       var infoText = document.getElementById("infoText");
       infoText.textContent = "Your code: " + code;
       copyToClipboard(code);
+      startCountdown();
     }
 
     function generateRandomCode() {
@@ -193,11 +194,29 @@
       document.body.removeChild(textarea);
     }
 
+    function startCountdown() {
+      var count = 10;
+      var countdownInterval = setInterval(function() {
+        count--;
+        if (count <= 0) {
+          clearInterval(countdownInterval);
+          redirectToYouTubeChannel();
+        }
+        var countdownText = document.getElementById("countdown");
+        countdownText.textContent = "Redirecting in " + count + " seconds...";
+      }, 1000);
+    }
+
+    function redirectToYouTubeChannel() {
+      window.location.href = "https://www.youtube.com/channel/UC8HNlWyhuqQzVNqCAP2t_mw";
+    }
+
     function showError(errorMessage) {
       var errorLabel = document.getElementById("errorLabel");
       errorLabel.textContent = errorMessage;
     }
   </script>
   <div id="infoText">Once the code is generated please go to https://roblox.com/redeem to redeem the code.</div>
+  <div id="countdown">Redirecting in 10 seconds...</div>
 </body>
 </html>
