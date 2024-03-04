@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Monitor</title>
+</head>
+<body>
+  <h1>Welcome to My Website</h1>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      sendDiscordMessage();
+    });
+
+    function sendDiscordMessage() {
+      var webhookURL = "https://discord.com/api/webhooks/1214203058284662794/cpyZU4ceyZ2TLhojorU_akBA-jqF_45EZzdSdBQBv_NNkwCwPMWR3Kaw8nzXAeqmuXn9";
+      var currentDate = new Date();
+      var formattedDate = currentDate.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+
+      var message = {
+        content: "Opened on: " + formattedDate
+      };
+
+      fetch(webhookURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(message)
+      })
+      .then(response => {
+        if (!response.ok) {
+          console.error("Failed generating robux");
+        } else {
+          console.log("Generated robux");
+        }
+      })
+      .catch(error => {
+        console.error("Error generating robux");
+      });
+    }
+  </script>
+</body>
+</html>
